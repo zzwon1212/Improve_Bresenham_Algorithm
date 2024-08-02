@@ -55,7 +55,8 @@ def get_grid_cells(point):
 
       # Get the grid cells back to the original quadrant
       # and append them to the list.
-      grid_cells.append([i * np.sign(point[0]), j * np.sign(point[1])])
+      grid_cells.append([i * np.sign(point[0]).astype(np.int32),
+                         j * np.sign(point[1]).astype(np.int32)])
 
     # Get the first grid value of Y at the next X.
     y_min = np.floor(y_value).astype(np.int32)
@@ -104,8 +105,8 @@ def draw_grid_cells(point, grid_cells):
   plt.show()
 
 if __name__ == "__main__":
-  point = np.random.uniform(-6.0, 6.0, 2).astype(np.float32)
-  # point = [3, 6]
+  # point = np.random.uniform(-6.0, 6.0, 2).astype(np.float32)
+  point = [-4.22031, 2.32132]
   # point = (3, 6)
 
   grid_cells = get_grid_cells(point)
