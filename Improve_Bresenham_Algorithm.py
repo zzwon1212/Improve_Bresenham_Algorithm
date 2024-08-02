@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib.lines as lines
 
-def get_grid_cells(point):
+def get_grid_cells(point, N):
   """
   Get grid cells that the line between a point and the origin passes through.
 
@@ -25,8 +25,8 @@ def get_grid_cells(point):
   # Get the absolute value of x and y.
   # We will consider only the first quadrant
   # and later, get the grid cells back to the original quadrant.
-  x = abs(point[0])
-  y = abs(point[1])
+  x = abs(point[0]) / N
+  y = abs(point[1]) / N
 
   # Calculate a slope of the line between p and origin.
   slope = y / (x + 1e-6)
@@ -63,7 +63,7 @@ def get_grid_cells(point):
     
   return grid_cells
 
-def draw_grid_cells(point, grid_cells):
+def draw_grid_cells(point, grid_cells, N):
   """
   Draw the line between a point and the origin and
   the grid cells that the line passes through.
@@ -87,7 +87,9 @@ def draw_grid_cells(point, grid_cells):
 
   # Draw the grid cells
   for (i, j) in grid_cells:
-    rect = patches.Rectangle((i - 0.5*(np.sign(x) + 1), j - 0.5*(np.sign(y) + 1)), 1, 1, facecolor="gold")
+    rect = patches.Rectangle((N * (i - 0.5 * (np.sign(x) + 1)),
+                              N * (j - 0.5 * (np.sign(y) + 1))),
+                             N, N, facecolor="gold")
     ax.add_patch(rect)
   
   # Draw the line
@@ -97,20 +99,20 @@ def draw_grid_cells(point, grid_cells):
   # For plot
   ax.set_xlim(-6, 6)
   ax.set_ylim(-6, 6)
-  ax.set_xticks(range(-6, 6 + 1))
-  ax.set_yticks(range(-6, 6 + 1))
+  ax.set_xticks(np.arange(-6 // N * N, 6 // N * N + 1, N))
+  ax.set_yticks(np.arange(-6 // N * N, 6 // N * N + 1, N))
   ax.grid(True, which='both', linestyle='--')
   ax.axhline(0, color='black', linewidth=2)
   ax.axvline(0, color='black', linewidth=2)
   plt.show()
 
 if __name__ == "__main__":
-  # point = np.random.uniform(-6.0, 6.0, 2).astype(np.float32)
-  point = [-4.22031, 2.32132]
-  # point = (3, 6)
+  point = np.random.uniform(-6.0, 6.0, 2).astype(np.float32)
+  # point = [-4.22031, 2.32132]
+  N = 0.3
 
-  grid_cells = get_grid_cells(point)
-  draw_grid_cells(point, grid_cells)
+  grid_cells = get_grid_cells(point, N)
+  draw_grid_cells(point, grid_cells, N)
 
   print("Point:", point)
   print("Grid Cell:", grid_cells)

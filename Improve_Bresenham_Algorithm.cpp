@@ -8,11 +8,11 @@ struct Point {
     float x, y;
 };
 
-std::vector<std::pair<int, int>> get_grid_cells(Point point) {
+std::vector<std::pair<int, int>> get_grid_cells(Point point, float N) {
     std::vector<std::pair<int, int>> grid_cells;
 
-    float x = std::abs(point.x);
-    float y = std::abs(point.y);
+    float x = std::abs(point.x) / N;
+    float y = std::abs(point.y) / N;
 
     float slope = y / (x + 1e-6);
 
@@ -39,7 +39,7 @@ std::vector<std::pair<int, int>> get_grid_cells(Point point) {
 }
 
 void draw_grid_cells(Point point, const std::vector<std::pair<int, int>>& grid_cells) {
-    std::cout << "Drawing not implemented in C++ version. Use a suitable graphics library.\n";
+    std::cout << "Drawing not implemented in C++ version. Use Python version.\n";
     std::cout << "Grid Cells:\n";
     for (const auto& cell : grid_cells) {
         std::cout << "(" << cell.first << ", " << cell.second << ")\n";
@@ -53,8 +53,11 @@ int main() {
     point.x = static_cast<float>(std::rand()) / RAND_MAX * 12 - 6;
     point.y = static_cast<float>(std::rand()) / RAND_MAX * 12 - 6;
     std::cout << "Point: (" << point.x << ", " << point.y << ")\n";
+    
+    float N = 0.3f;
+    std::cout << "N: " << N << std::endl;
 
-    std::vector<std::pair<int, int>> grid_cells = get_grid_cells(point);
+    std::vector<std::pair<int, int>> grid_cells = get_grid_cells(point, N);
     draw_grid_cells(point, grid_cells);
 
     return 0;
